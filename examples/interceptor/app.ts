@@ -32,7 +32,8 @@ axios({
   url: '/interceptor/get',
   method: 'get',
   headers: {
-    test: ''
+    test: '',
+    useText: 'xxx'
   }
 }).then((res) => {
   console.log(res.data)

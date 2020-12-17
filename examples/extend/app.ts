@@ -7,7 +7,7 @@ import axios from '../../src/index'
 //     msg: 'hi'
 //   }
 // })
-//
+
 // axios.request({
 //   url: '/extend/post',
 //   method: 'post',
@@ -15,19 +15,19 @@ import axios from '../../src/index'
 //     msg: 'hello'
 //   }
 // })
-//
+
 // axios.get('/extend/get')
-//
+
 // axios.options('/extend/options')
-//
+
 // axios.delete('/extend/delete')
-//
+
 // axios.head('/extend/head')
-//
+
 // axios.post('/extend/post', { msg: 'post' })
-//
+
 // axios.put('/extend/put', { msg: 'put' })
-//
+
 // axios.patch('/extend/patch', { msg: 'patch' })
 
 // axios({
@@ -37,11 +37,18 @@ import axios from '../../src/index'
 //     msg: 'hi'
 //   }
 // })
-//
+
 // axios('/extend/post', {
 //   method: 'post',
 //   data: {
 //     msg: 'hello'
+//   }
+// })
+
+// axios('/extend/post', {
+//   method: 'post',
+//   data: {
+//     msg: '111'
 //   }
 // })
 
@@ -57,6 +64,13 @@ interface User {
 }
 
 function getUser<T>() {
+
+  // ResponseData<T> 变成了 {
+  //   code: number
+  //   result: T
+  //   message: string
+  // }
+
   return axios<ResponseData<T>>('/extend/user')
     .then(res => res.data)
     .catch(err => console.error(err))
