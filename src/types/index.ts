@@ -21,6 +21,16 @@ export interface AxiosRequestConfig {
   responseType?: XMLHttpRequestResponseType
   /** 超时时间 ms */
   timeout?: number
+  /** 转换请求体 */
+  transformRequest?: AxiosTransformer | AxiosTransformer[]
+  /** 转换响应体 */
+  transformResponse?: AxiosTransformer | AxiosTransformer[]
+
+  [propName: string]: any
+}
+
+export interface AxiosTransformer {
+  (data?: any, headers?: any): any
 }
 
 export interface AxiosResponse<T = any> {
@@ -97,6 +107,10 @@ export interface AxiosInstance extends Axios {
   // 函数重载
   <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
 } 
+
+export interface AxiosStatic extends AxiosInstance {
+  create(config?: AxiosRequestConfig): AxiosInstance
+}
 
 
 // 拦截器管理对象, 通过泛型，可以是 请求拦截器，和响应拦截器
