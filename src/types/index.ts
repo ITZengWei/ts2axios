@@ -25,12 +25,10 @@ export interface AxiosRequestConfig {
   transformRequest?: AxiosTransformer | AxiosTransformer[]
   /** 转换响应体 */
   transformResponse?: AxiosTransformer | AxiosTransformer[]
+  /** 中断令牌 */
+  cancelToken?: CancelToken
 
   [propName: string]: any
-}
-
-export interface AxiosTransformer {
-  (data?: any, headers?: any): any
 }
 
 export interface AxiosResponse<T = any> {
@@ -109,7 +107,17 @@ export interface AxiosInstance extends Axios {
 } 
 
 export interface AxiosStatic extends AxiosInstance {
+  /** 创建 axios 实例 */
   create(config?: AxiosRequestConfig): AxiosInstance
+
+  /** 创建 取消请求的实例 */
+  CancelToken: CancelTokenStatic
+
+  /** TODO 这有什么用 */
+  Cancel: CancelStatic
+
+  /** 判断是否为 Cancel 构造出来的实例 */
+  isCancel(value: any): boolean
 }
 
 
@@ -128,4 +136,49 @@ export interface resolveFn<T> {
 
 export interface rejectFn {
   (val: any): any
+}
+
+export interface AxiosTransformer {
+  (data?: any, headers?: any): any
+}
+
+export interface CancelToken {
+  promise: Promise<Cancel>
+  /** 取消理由 */
+  reason?: Cancel
+
+  /** 如果已经取消就抛出异常 */
+  throwIfRequested(): void
+}
+
+/** 取消方法 */
+export interface Canceler {
+  (message?: string): void
+}
+
+
+export interface CancelExecutor {
+  (cancel: Canceler): void
+}
+
+
+export interface CancelTokenSource {
+  token: CancelToken
+  cancel: Canceler
+}
+
+/** 注意： 这是类类型 */
+export interface CancelTokenStatic {
+  new (executor: CancelExecutor): CancelToken
+
+  source(): CancelTokenSource
+}
+
+
+export interface Cancel {
+  message?: string
+}
+
+export interface CancelStatic {
+  new(message?: string): Cancel
 }

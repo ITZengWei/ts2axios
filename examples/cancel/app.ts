@@ -34,5 +34,5 @@ axios.get('/cancel/get', {
 })
 
 setTimeout(() => {
-  cancel()
+  cancel('use mine cancel ')
 }, 200)

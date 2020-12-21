@@ -18,7 +18,6 @@ export function processHeaders(headers: any, data: any): any {
   if (isPlainObject(data)) {
     // 设置默认的 Content-Type
     if (headers && !headers['Content-Type']) {
-      console.log(headers)
       headers['Content-Type'] = 'application/json;charset=utf-8'
     }
   }

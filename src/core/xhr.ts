@@ -10,7 +10,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       data = null,
       headers,
       responseType,
-      timeout
+      timeout,
+      cancelToken
     } = config
   
     const request = new XMLHttpRequest()
@@ -58,14 +59,27 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         request.setRequestHeader(name, headers[name])
       }
     })
-  
+    
+    if (cancelToken) {
+      cancelToken.promise
+        .then(reason => {
+          request.abort()
+          reject(reason)
+        })
+    } 
+
+
     request.send(data)
 
 
     function handleResponse(response: AxiosResponse) {
       if (response.status >= 200 && response.status < 300) {
         resolve(response)
+      // 取消  
+      } else if (response.status === 0) {
+        return
       } else {
+
         // reject(new Error(`Request failed with status code ${ response.status }`))
         reject(createError(`Request failed with status code ${ response.status }`, config, null, request, response))
       }

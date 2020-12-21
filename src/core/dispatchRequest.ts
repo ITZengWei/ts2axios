@@ -7,6 +7,8 @@ import { deepMerge } from '../helpers/util'
 import transform from './transform'
 
 export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
+  throwIfCancellationRequested(config)
+  
   processConfig(config)
 
   return xhr(config)
@@ -66,6 +68,13 @@ function flattenHeaders(headers: any, method: Method): any {
     delete headers[method]
   })
   return headers
+} 
+
+/** 如果再发送请求前已经取消，我们直接退出 */
+function throwIfCancellationRequested(config: AxiosRequestConfig) {
+  if (config.cancelToken) {
+    config.cancelToken.throwIfRequested()
+  }
 }
 
 
