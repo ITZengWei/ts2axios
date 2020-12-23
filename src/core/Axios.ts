@@ -1,5 +1,5 @@
 import { AxiosPromise, AxiosRequestConfig, Method, AxiosResponse, resolveFn, rejectFn } from './../types/index'
-import dispatchRequest from './dispatchRequest'
+import dispatchRequest, { transformURL } from './dispatchRequest'
 import InterceptorManager from './InterceptorManager'
 import mergeConfig from './mergeConfig'
 
@@ -117,6 +117,14 @@ export default class Axios {
       url,
       data
     }))
+  }
+
+  /** 不发送请求 根据配置获取发送的 url */
+  getUri(config: AxiosRequestConfig) {
+    // 对 config 进行合并
+    config = mergeConfig(this.defaults, config)
+    
+    return transformURL(config)
   }
 }
 

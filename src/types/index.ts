@@ -7,6 +7,8 @@ export type Method = 'get' | 'GET'
   | 'head' | 'HEAD'
 
 export interface AxiosRequestConfig {
+  /** 基础请求地址 */
+  baseURL?: string
   /** 请求地址 */
   url?: string
   /** 请求方法 */
@@ -27,6 +29,22 @@ export interface AxiosRequestConfig {
   transformResponse?: AxiosTransformer | AxiosTransformer[]
   /** 中断令牌 */
   cancelToken?: CancelToken
+  /** 非同源是否携带 cookie */
+  withCredentials?: boolean
+  /** 跨站点攻击 从那个 cookie 属性获取 */
+  xsfrCookieName?: string
+  /** 跨站点攻击 设置哪个 header 属性 */
+  xsfrHeaderName?: string
+  /** 上传进度事件 */
+  onUploadProgress?: (e: ProgressEvent) => void
+  /** 下载进度事件 */
+  onDownloadProgress?: (e: ProgressEvent) => void
+  /** 根据 auth 设置请求头 headers 中 Authorization 属性值 */
+  auth?: AxiosBasicCredentials
+  /** 验证响应状态码是否合法 */
+  validateStatus?: (status: number) => boolean
+  /** params 参数解析函数 */
+  paramsSerializer?: (params: any) => string
 
   [propName: string]: any
 }
@@ -63,6 +81,9 @@ export interface AxiosError extends Error {
   isAxiosError?: boolean
 }
 
+export interface AxiosClassStatic {
+  new(config: AxiosRequestConfig): Axios
+}
 
 export interface Axios {
   /** 默认配置参数 */
@@ -97,6 +118,9 @@ export interface Axios {
 
   /** PATCH 请求方法 */
   patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
+
+  /** 不发送请求 根据配置获取发送的 url 信息 */
+  getUri(config: AxiosRequestConfig): string
 }
 
 // 混合类型
@@ -118,6 +142,15 @@ export interface AxiosStatic extends AxiosInstance {
 
   /** 判断是否为 Cancel 构造出来的实例 */
   isCancel(value: any): boolean
+
+  /** 多个请求方法 TODO */
+  all<T = any>(promises: Array<T | Promise<T>>): Promise<T[]>
+
+  /** 展开 TODO */
+  spread<T, R>(callback: (...args: T[]) => R): (arr: T[]) => R   
+
+  /** 向外抛出实例 */
+  Axios: AxiosClassStatic
 }
 
 
@@ -181,4 +214,9 @@ export interface Cancel {
 
 export interface CancelStatic {
   new(message?: string): Cancel
+}
+
+export interface AxiosBasicCredentials {
+  username: string
+  password: string
 }

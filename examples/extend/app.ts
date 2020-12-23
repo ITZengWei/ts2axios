@@ -1,5 +1,7 @@
 import axios from '../../src/index'
 
+axios.get('http://blog.smalllb.top/admin/static/media/banner.a0097ffa.png')
+
 // axios({
 //   url: '/extend/post',
 //   method: 'post',

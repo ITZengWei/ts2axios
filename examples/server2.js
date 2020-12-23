@@ -18,11 +18,15 @@ const cors = {
 }
 
 router.post('/more/server2', function(req, res) {
+  console.log('s222');
+  
   res.set(cors)
   res.json(req.cookies)
 })
 
 router.options('/more/server2', function(req, res) {
+  console.log('optionsoptionsoptionsoptionsoptionsoptionsoptionsoptions');
+  
   res.set(cors)
   res.end()
 })

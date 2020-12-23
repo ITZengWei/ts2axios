@@ -29,7 +29,16 @@ const defaults: AxiosRequestConfig = {
     function(data: any): any {
       return transformResponse(data)
     }
-  ]
+  ],
+
+  // 默认验证状态码规则
+  validateStatus(status: number) {
+    return status >= 200 && status < 300
+  },
+
+  xsfrCookieName: 'XSRF-TOKEN',
+
+  xsfrHeaderName: 'X-XSRF-TOKEN'
 
 } 
 

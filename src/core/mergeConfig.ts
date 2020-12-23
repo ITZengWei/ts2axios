@@ -36,7 +36,7 @@ function complexStrategy(val1: any, val2: any) {
 }
 
 /** 复杂对象合并的字段 */
-const complexConfigFields = ['headers']
+const complexConfigFields = ['headers', 'auth']
 
 complexConfigFields.forEach(field => {
   strategies[field] = complexStrategy

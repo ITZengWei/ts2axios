@@ -3,7 +3,7 @@ import xhr from './xhr'
 import { buildURL } from '../helpers/url'
 import { transformRequest, transformResponse } from '../helpers/data'
 import { processHeaders } from '../helpers/headers'
-import { deepMerge } from '../helpers/util'
+import { combineURL, deepMerge, isAbsoluteURL } from '../helpers/util'
 import transform from './transform'
 
 export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
@@ -30,11 +30,16 @@ function processConfig(config: AxiosRequestConfig): void {
 }
 
 /** 格式化 url 请求路径 */
-function transformURL(config: AxiosRequestConfig): string {
-  const { url, params } = config
+export function transformURL(config: AxiosRequestConfig): string {
+  let { url, params, paramsSerializer, baseURL } = config
+
+  // 如果设置了 基础地址，并且 当前 url 不是绝对地址的话做拼接
+  if (baseURL && !isAbsoluteURL(url!)) {
+    url = combineURL(baseURL, url!)
+  }
 
   // 加上 ！ 就是非空 
-  return buildURL(url!, params)
+  return buildURL(url!, params, paramsSerializer)
 }
 
 /** 格式化 请求数据 */

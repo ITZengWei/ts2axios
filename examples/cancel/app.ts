@@ -21,6 +21,7 @@ setTimeout(() => {
   })
 }, 100)
 
+
 let cancel: Canceler
 
 axios.get('/cancel/get', {
